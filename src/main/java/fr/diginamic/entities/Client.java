@@ -1,70 +1,59 @@
 package fr.diginamic.entities;
 
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
-@Table(name = "client")
 public class Client {
-  /** L'id du client */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
+  private Integer id;
 
-  /** Les emprunts du client */
-  @OneToMany(mappedBy = "client")
-  private Set<Emprunt> emprunts;
+  // --- Foreign ---
+  @ManyToMany
+  @JoinTable(name = "client_compte", joinColumns = @JoinColumn(name = "fk_client"), inverseJoinColumns = @JoinColumn(name = "fk_compte"))
+  private List<Compte> comptes;
 
-  /** Nom du client */
-  @Column(name = "nom", nullable = false)
+  // ----------- Columns -------------
+
+  @Column
   private String nom;
 
-  /** Prenom du client */
-  @Column(name = "prenom", nullable = false)
+  @Column
   private String prenom;
 
-  /** Constructeur vide */
+  @Column
+  @Temporal(TemporalType.DATE)
+  private LocalDate dateNaissance;
+
+  @Embedded
+  private Adresse adresse;
+
   public Client() {
   }
 
-  /**
-   * Constructeur avec id, nom et prenom
-   * 
-   * @param id
-   * @param nom
-   * @param prenom
-   */
-  public Client(int id, String nom, String prenom) {
-    this.id = id;
-    this.nom = nom;
-    this.prenom = prenom;
-  }
-
-  public int getId() {
+  public Integer getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
-  public Set<Emprunt> getEmprunts() {
-    return emprunts;
-  }
-
-  public void setEmprunts(Set<Emprunt> emprunts) {
-    this.emprunts = emprunts;
-  }
-
   public String getNom() {
-    return nom.toUpperCase();
+    return nom;
   }
 
   public void setNom(String nom) {
@@ -77,6 +66,36 @@ public class Client {
 
   public void setPrenom(String prenom) {
     this.prenom = prenom;
+  }
+
+  public LocalDate getDateNaissance() {
+    return dateNaissance;
+  }
+
+  public void setDateNaissance(LocalDate dateNaissance) {
+    this.dateNaissance = dateNaissance;
+  }
+
+  public Adresse getAdresse() {
+    return adresse;
+  }
+
+  public void setAdresse(Adresse adresse) {
+    this.adresse = adresse;
+  }
+
+  @Override
+  public String toString() {
+    return "Client [id=" + id + ", comptes=" + comptes + ", nom=" + nom + ", prenom=" + prenom + ", dateNaissance="
+        + dateNaissance + ", adresse=" + adresse.toString() + "]";
+  }
+
+  public List<Compte> getComptes() {
+    return comptes;
+  }
+
+  public void setComptes(List<Compte> comptes) {
+    this.comptes = comptes;
   }
 
 }

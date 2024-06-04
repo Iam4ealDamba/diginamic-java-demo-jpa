@@ -6,7 +6,7 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 
 public class JpaConfig {
-  EntityManagerFactory factory = Persistence.createEntityManagerFactory("exo_2");
+  EntityManagerFactory factory = Persistence.createEntityManagerFactory("exo_3");
   EntityManager manager = factory.createEntityManager();
   EntityTransaction transaction = manager.getTransaction();
 
